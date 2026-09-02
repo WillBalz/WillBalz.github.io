@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>William Balz</title>
+<meta name="description" content="William Balz — math, manufacturing, and early-stage software. Co-author of a new proof of Holditch's Theorem.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231B3A5C'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23C68E4A' stroke-width='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='9' stroke='%23C68E4A' stroke-width='2'/%3E%3Cline x1='16' y1='23' x2='16' y2='30' stroke='%23C68E4A' stroke-width='2'/%3E%3Cline x1='2' y1='16' x2='9' y2='16' stroke='%23C68E4A' stroke-width='2'/%3E%3Cline x1='23' y1='16' x2='30' y2='16' stroke='%23C68E4A' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,400;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blueprint:#1B3A5C;
+    --blueprint-deep:#12283F;
+    --paper:#F4F0E6;
+    --paper-dim:#E4DFCF;
+    --ink:#152331;
+    --brass:#C68E4A;
+    --brass-bright:#E0AE68;
+    --brass-ink:#8B5A22;
+    --line-on-dark:rgba(244,240,230,.14);
+    --line-on-light:rgba(21,35,49,.08);
+    --maxw:840px;
+    --maxw-wide:1080px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--blueprint);
+    color:var(--paper);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:450;
+    line-height:1.1;
+    margin:0;
+  }
+
+  a{color:inherit;}
+  p{margin:0;}
+
+  .grid-dark{
+    background-color:var(--blueprint);
+    background-image:
+      linear-gradient(var(--line-on-dark) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-on-dark) 1px, transparent 1px);
+    background-size:42px 42px;
+  }
+  .grid-light{
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--line-on-light) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-on-light) 1px, transparent 1px);
+    background-size:42px 42px;
+  }
+  .plain-dark{ background-color:var(--blueprint-deep); }
+
+  section{ position:relative; }
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 28px;
+  }
+  .wrap-wide{
+    max-width:var(--maxw-wide);
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- Nav ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(18,40,63,.86);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line-on-dark);
+  }
+  .nav-inner{
+    max-width:var(--maxw-wide);
+    margin:0 auto;
+    padding:16px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px;
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:1.15rem;
+    color:var(--paper);
+    text-decoration:none;
+    letter-spacing:.01em;
+  }
+  .nav-links{
+    display:flex; gap:24px; flex-wrap:wrap;
+    list-style:none; margin:0; padding:0;
+    font-size:.92rem;
+  }
+  .nav-links a{
+    text-decoration:none;
+    color:var(--paper);
+    opacity:.8;
+    border-bottom:1px solid transparent;
+    padding-bottom:2px;
+    transition:opacity .15s ease, border-color .15s ease;
+  }
+  .nav-links a:hover, .nav-links a:focus-visible{
+    opacity:1;
+    border-color:var(--brass);
+  }
+  .nav-cta{
+    font-size:.88rem;
+    padding:7px 14px;
+    border:1px solid var(--brass);
+    border-radius:3px;
+    color:var(--brass-bright);
+    text-decoration:none;
+    white-space:nowrap;
+    transition:background .15s ease, color .15s ease;
+  }
+  .nav-cta:hover, .nav-cta:focus-visible{
+    background:var(--brass);
+    color:var(--blueprint-deep);
+  }
+
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--brass-bright);
+    outline-offset:3px;
+  }
+
+  /* ---------- Kicker / section marker ---------- */
+  .kicker{
+    display:flex; align-items:center; gap:.55rem;
+    font-size:.95rem; font-weight:600;
+    margin-bottom:.9rem;
+  }
+  .kicker svg{ flex:none; }
+  .on-dark .kicker{ color:var(--brass-bright); }
+  .on-light .kicker{ color:var(--brass-ink); }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:96px 0 72px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:48px;
+    align-items:center;
+  }
+  .eyebrow-line{
+    font-size:1rem;
+    color:var(--paper-dim);
+    margin-bottom:18px;
+  }
+  h1.hero-h1{
+    font-size:clamp(2.4rem, 4.6vw + 1rem, 3.9rem);
+    font-weight:450;
+    letter-spacing:-.01em;
+    margin-bottom:22px;
+  }
+  .hero-sub{
+    font-size:1.08rem;
+    color:var(--paper);
+    max-width:52ch;
+    margin-bottom:32px;
+  }
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    display:inline-block;
+    font-size:.95rem;
+    font-weight:600;
+    text-decoration:none;
+    padding:12px 20px;
+    border-radius:3px;
+    transition:transform .15s ease, background .15s ease, color .15s ease;
+  }
+  .btn-primary{ background:var(--brass); color:var(--blueprint-deep); }
+  .btn-primary:hover, .btn-primary:focus-visible{ background:var(--brass-bright); }
+  .btn-ghost{ border:1px solid var(--line-on-dark); color:var(--paper); }
+  .btn-ghost:hover, .btn-ghost:focus-visible{ border-color:var(--brass-bright); color:var(--brass-bright); }
+
+  .hero-art{ width:100%; height:auto; }
+  .hero-art .dot{ fill:var(--paper); opacity:.32; }
+  .hero-art .tick{ stroke:var(--paper); opacity:.22; stroke-width:1; }
+  .hero-art .path{
+    fill:none; stroke:var(--brass-bright); stroke-width:1.6;
+    stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1;
+    animation:draw 2.1s .3s ease forwards;
+  }
+  .hero-art .target-ring{ fill:none; stroke:var(--brass-bright); stroke-width:1.3; opacity:.9; }
+  .hero-art .target-dot{ fill:var(--brass-bright); }
+  .hero-art .target-cross line{ stroke:var(--brass-bright); stroke-width:1.3; opacity:.9; }
+  .hero-art .eq-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    fill:var(--paper-dim);
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @media (prefers-reduced-motion: reduce){
+    .hero-art .path{ animation:none; stroke-dashoffset:0; }
+  }
+
+  /* ---------- Sections ---------- */
+  .section{ padding:76px 0; }
+  .on-dark{ color:var(--paper); }
+  .on-light{ color:var(--ink); }
+
+  h2.section-h2{
+    font-size:clamp(1.6rem, 2.1vw + 1rem, 2.15rem);
+    font-weight:450;
+    margin-bottom:20px;
+    max-width:34ch;
+  }
+
+  .prose{ max-width:66ch; font-size:1.02rem; }
+  .prose + .prose{ margin-top:16px; }
+  .on-light .prose{ color:#33465A; }
+  .on-dark .prose{ color:var(--paper-dim); }
+
+  /* Featured work card */
+  .paper-card{
+    background:#FBF9F3;
+    border:1px solid rgba(21,35,49,.12);
+    border-radius:4px;
+    padding:36px;
+    margin-top:28px;
+  }
+  .paper-byline{
+    font-size:.92rem;
+    color:#5B6C7C;
+    margin-bottom:18px;
+  }
+  .paper-caption{
+    font-size:.88rem;
+    color:#5B6C7C;
+    margin-top:20px;
+    font-style:italic;
+  }
+  .link-inline{
+    color:var(--brass-ink);
+    text-decoration:underline;
+    text-underline-offset:3px;
+    font-weight:600;
+  }
+  .link-inline:hover, .link-inline:focus-visible{ color:#6E4419; }
+  .on-dark .link-inline{ color:var(--brass-bright); }
+  .on-dark .link-inline:hover{ color:#F0C285; }
+
+  .card-link-row{ margin-top:24px; }
+
+  /* Projects */
+  .project-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-top:28px;
+  }
+  .project-card{
+    background:var(--blueprint-deep);
+    border:1px solid var(--line-on-dark);
+    border-radius:4px;
+    padding:28px;
+  }
+  .project-org{
+    font-size:.85rem;
+    font-weight:600;
+    color:var(--brass-bright);
+    margin-bottom:10px;
+  }
+  .project-title{
+    font-family:'Fraunces', serif;
+    font-size:1.35rem;
+    font-weight:500;
+    margin-bottom:10px;
+  }
+  .project-body{ font-size:.96rem; color:var(--paper-dim); margin-bottom:18px; }
+  .more-line{ margin-top:24px; font-size:.95rem; color:var(--paper-dim); }
+
+  /* Blockquote */
+  blockquote{
+    margin:26px 0;
+    padding:4px 0 4px 22px;
+    border-left:2px solid var(--brass);
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.08rem;
+    line-height:1.55;
+  }
+  .on-light blockquote{ color:#243547; }
+  .on-dark blockquote{ color:var(--paper); border-left-color:var(--brass-bright); }
+  .bq-cite{
+    display:block;
+    margin-top:10px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-style:normal;
+    font-size:.85rem;
+    color:#5B6C7C;
+  }
+  .on-dark .bq-cite{ color:var(--paper-dim); }
+
+  /* Timeline */
+  .timeline-cols{
+    display:grid;
+    grid-template-columns:1.4fr 1fr;
+    gap:40px;
+    margin-top:44px;
+  }
+  h3.tl-h3{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:.95rem;
+    font-weight:600;
+    color:var(--brass-bright);
+    margin-bottom:18px;
+  }
+  .tl-item{
+    padding:14px 0;
+    border-top:1px solid var(--line-on-dark);
+  }
+  .tl-item:last-child{ padding-bottom:0; }
+  .tl-role{ font-size:.98rem; font-weight:600; color:var(--paper); }
+  .tl-meta{ font-size:.85rem; color:var(--paper-dim); margin-top:2px; }
+  .tl-desc{ font-size:.88rem; color:var(--paper-dim); margin-top:6px; max-width:46ch; }
+
+  /* About signoff photo */
+  .about-signoff{
+    display:flex; align-items:center; gap:18px;
+    margin-top:56px; padding-top:32px;
+    border-top:1px solid var(--line-on-dark);
+  }
+  .signoff-photo{
+    width:88px; height:88px;
+    object-fit:cover;
+    border-radius:4px;
+    border:1px solid var(--brass);
+    flex:none;
+  }
+  .signoff-name{ font-family:'Fraunces', serif; font-size:1.05rem; font-weight:500; color:var(--paper); }
+  .signoff-loc{ font-size:.88rem; color:var(--paper-dim); margin-top:3px; }
+
+  /* Contact / footer */
+  .contact-section{ padding:88px 0 40px; text-align:center; }
+  .contact-links{
+    display:flex; justify-content:center; gap:28px; flex-wrap:wrap;
+    margin-top:30px; font-size:1rem;
+  }
+  .contact-links a{
+    text-decoration:none; color:var(--brass-bright);
+    border-bottom:1px solid rgba(224,174,104,.4);
+    padding-bottom:2px;
+  }
+  .contact-links a:hover, .contact-links a:focus-visible{ border-color:var(--brass-bright); }
+
+  .closing-quote{
+    max-width:640px; margin:64px auto 0;
+    font-family:'Fraunces', serif; font-style:italic;
+    font-size:clamp(1.15rem, 1.6vw + .7rem, 1.5rem);
+    line-height:1.5; color:var(--paper);
+  }
+  .closing-quote cite{
+    display:block; margin-top:16px;
+    font-family:'IBM Plex Sans', sans-serif; font-style:normal;
+    font-size:.85rem; color:var(--paper-dim);
+  }
+  .foot-copy{ margin-top:56px; font-size:.8rem; color:#5C7288; }
+
+  @media (max-width: 780px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero{ padding:64px 0 48px; }
+    .hero-art{ order:-1; max-width:340px; margin:0 auto 8px; }
+    .project-grid{ grid-template-columns:1fr; }
+    .timeline-cols{ grid-template-columns:1fr; gap:32px; }
+    .section{ padding:56px 0; }
+    .nav-inner{ padding:14px 20px; gap:10px; }
+    .nav-links{ gap:14px 18px; font-size:.86rem; }
+    .paper-card{ padding:24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="brand" href="#top">William Balz</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#currently">Currently</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <a class="nav-cta" href="#contact">Get in touch</a>
+  </div>
+</nav>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero grid-dark on-dark">
+    <div class="wrap-wide">
+      <div class="hero-grid">
+        <div>
+          <h1 class="hero-h1">The optimal point,<br>found fast.</h1>
+          <p class="eyebrow-line">Studying Electrical &amp; Biomedical Engineering at Tufts University.</p>
+          <p class="hero-sub">I'm William Balz. My work moves between pure math, advanced manufacturing, and early-stage software — but it's usually the same problem underneath: an answer hidden inside a huge space of possibilities, and not much time to find it.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://www.parabola.unsw.edu.au/sites/default/files/2025-08/vol61_no2_4.pdf" target="_blank" rel="noopener">Read the paper</a>
+            <a class="btn btn-ghost" href="https://github.com/WillBalz" target="_blank" rel="noopener">See the code</a>
+          </div>
+        </div>
+
+        <svg class="hero-art" viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram of scattered points converging to a single optimal point">
+          <!-- scattered candidate points -->
+          <circle class="dot" cx="46" cy="68" r="3"/>
+          <circle class="dot" cx="92" cy="34" r="2.4"/>
+          <circle class="dot" cx="130" cy="96" r="3.4"/>
+          <circle class="dot" cx="58" cy="150" r="2.6"/>
+          <circle class="dot" cx="24" cy="220" r="3"/>
+          <circle class="dot" cx="70" cy="270" r="2.4"/>
+          <circle class="dot" cx="118" cy="316" r="3.2"/>
+          <circle class="dot" cx="176" cy="350" r="2.6"/>
+          <circle class="dot" cx="248" cy="366" r="3"/>
+          <circle class="dot" cx="320" cy="352" r="2.6"/>
+          <circle class="dot" cx="384" cy="318" r="3.2"/>
+          <circle class="dot" cx="432" cy="262" r="2.6"/>
+          <circle class="dot" cx="452" cy="196" r="3"/>
+          <circle class="dot" cx="430" cy="128" r="2.6"/>
+          <circle class="dot" cx="384" cy="72" r="3.2"/>
+          <circle class="dot" cx="318" cy="40" r="2.6"/>
+          <circle class="dot" cx="252" cy="26" r="3"/>
+          <circle class="dot" cx="188" cy="44" r="2.4"/>
+          <circle class="dot" cx="150" cy="200" r="2.4"/>
+          <circle class="dot" cx="330" cy="180" r="2.4"/>
+          <circle class="dot" cx="270" cy="130" r="2"/>
+          <circle class="dot" cx="200" cy="270" r="2"/>
+
+          <!-- tick marks, blueprint dimension style -->
+          <line class="tick" x1="0" y1="200" x2="14" y2="200"/>
+          <line class="tick" x1="466" y1="200" x2="480" y2="200"/>
+          <line class="tick" x1="240" y1="0" x2="240" y2="14"/>
+          <line class="tick" x1="240" y1="386" x2="240" y2="400"/>
+
+          <!-- search path converging on the optimum -->
+          <path class="path" pathLength="1" d="M46,68 C90,130 60,180 100,210 C150,246 170,190 210,200 C245,208 232,196 240,200"/>
+
+          <!-- optimal point -->
+          <circle class="target-ring" cx="240" cy="200" r="17"/>
+          <g class="target-cross">
+            <line x1="240" y1="177" x2="240" y2="187"/>
+            <line x1="240" y1="213" x2="240" y2="223"/>
+            <line x1="217" y1="200" x2="227" y2="200"/>
+            <line x1="253" y1="200" x2="263" y2="200"/>
+          </g>
+          <circle class="target-dot" cx="240" cy="200" r="4.5"/>
+          <text class="eq-label" x="252" y="238">[Ω] − πpq = [Γ]</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED WORK -->
+  <section id="work" class="section grid-light on-light">
+    <div class="wrap">
+      <p class="kicker">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="0" x2="8" y2="3" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="13" x2="8" y2="16" stroke="currentColor" stroke-width="1.2"/><line x1="0" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.2"/><line x1="13" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="1.2"/></svg>
+        Featured work
+      </p>
+
+      <div class="paper-card">
+        <h2 class="section-h2" style="max-width:none;">On Convex Kinematics: A Resurrection of Holditch's Theorem</h2>
+        <p class="paper-byline">With Sawyer Jacobson. Published in Parabola, Vol. 61 No. 2, August 2025 (UNSW).</p>
+        <p class="prose">Holditch's Theorem is a strange, old fact about convex shapes: slide a fixed-length chord all the way around the boundary of any convex region, and a point riding along that chord traces out a smaller region. However oddly the outer shape is drawn, the two areas always relate by one clean formula. Reverend Holditch's original 1857 proof runs about ten lines but explains almost nothing about why it's true. Sawyer and I rebuilt the result on more concrete ground instead — using Green's Theorem to handle area along a curve, and an unexpected triangle, tied together by Stewart's Theorem, to make the whole construction visible step by step.</p>
+        <div class="card-link-row">
+          <a class="link-inline" href="https://www.parabola.unsw.edu.au/sites/default/files/2025-08/vol61_no2_4.pdf" target="_blank" rel="noopener">Read the paper (PDF)</a>
+        </div>
+        <p class="paper-caption">Written mostly over one Thanksgiving break, reviewed by Dr. Bill Dunham at Bryn Mawr College before publication submission.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section grid-dark on-dark">
+    <div class="wrap">
+      <p class="kicker">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="0" x2="8" y2="3" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="13" x2="8" y2="16" stroke="currentColor" stroke-width="1.2"/><line x1="0" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.2"/><line x1="13" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="1.2"/></svg>
+        Projects
+      </p>
+      <h2 class="section-h2">A couple of things I've built</h2>
+
+      <div class="project-grid">
+        <div class="project-card">
+          <p class="project-org">Tufts IDEA Lab</p>
+          <h3 class="project-title">Plastibot</h3>
+          <p class="project-body">A hyperspectral-imaging project that sorts plastic waste by type, aimed at higher-quality recycling. I lead the team and built the current classifier — a convolutional neural network in Keras that identifies six plastic types across nine colors at 85% accuracy, about 15 points better than last year's model.</p>
+          <a class="link-inline" href="https://github.com/WillBalz/Plastibot" target="_blank" rel="noopener">View the code</a>
+        </div>
+
+        <div class="project-card">
+          <p class="project-org">Side project</p>
+          <h3 class="project-title">Sushi Go bot</h3>
+          <p class="project-body">A small C++ bot for the card-drafting game Sushi Go. Less serious than it sounds — mostly an excuse to see how far a simple heuristic search gets inside a game small enough to reason about by hand.</p>
+          <a class="link-inline" href="https://github.com/WillBalz/SushiGo" target="_blank" rel="noopener">View the code</a>
+        </div>
+      </div>
+
+      <p class="more-line">A few other things live on <a class="link-inline" href="https://github.com/WillBalz" target="_blank" rel="noopener">GitHub</a>.</p>
+    </div>
+  </section>
+
+  <!-- CURRENTLY -->
+  <section id="currently" class="section grid-light on-light">
+    <div class="wrap">
+      <p class="kicker">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="0" x2="8" y2="3" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="13" x2="8" y2="16" stroke="currentColor" stroke-width="1.2"/><line x1="0" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.2"/><line x1="13" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="1.2"/></svg>
+        Currently
+      </p>
+      <h2 class="section-h2">Cellular agriculture, at the Stout Lab</h2>
+      <p class="prose">Since January 2026 I've been an undergraduate researcher in Tufts' cellular agriculture lab, working on genetic modifications and media formulations aimed at faster cell growth, better suspension viability, and greater cell density. I also train new lab members on protocol and sterile technique. Right now, I'm most excited about our new <i>de novo</i> lipogenesis project, which we plan to attack from several different biological angles.</p>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section grid-dark on-dark">
+    <div class="wrap">
+      <p class="kicker">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="0" x2="8" y2="3" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="13" x2="8" y2="16" stroke="currentColor" stroke-width="1.2"/><line x1="0" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.2"/><line x1="13" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="1.2"/></svg>
+        About
+      </p>
+      <h2 class="section-h2">A bit more</h2>
+
+      <p class="prose">I'm a sophomore studying Electrical Engineering and Biomedical Engineering at Tufts University, after a high school career built around moving fast: I taught myself a full year of Calculus BC in under a month and walked into the AP exam cold, scoring a 5, later taking Linear Algebra and Multivariable Calculus at Harvard. I also took junior-level EE Probability &amp; Statistics at Tufts as the only freshman in the room.</p>
+
+      <p class="prose">That same instinct — work first, credentials later — carried into everywhere I've worked since: optimizing manufacturing processes in metal 3D-printing at VulcanForms, founding an ed-tech startup from inside a venture fund at Morningside, and mentoring new researchers at Tufts' cellular agriculture lab. It started, though, with a proof.</p>
+
+      <blockquote>
+        “I remember sitting at my desk on the phone with my friend during our Thanksgiving break. It was the 40th hour that week we'd spent trying to prove Holditch's Theorem in a more intuitive, concretely geometric format. We were sold on using Green's Theorem, but hadn't made much progress until a last-ditch effort late on Sunday night: an implicit triangle that would tie everything together with Stewart's Theorem.”
+        <span class="bq-cite">-My sappy recounting of the creative process</span>
+      </blockquote>
+
+      <p class="prose">The same pattern showed up again at VulcanForms, when a mentor left for three days and asked for an optimized laser-marking protocol by the time he got back — thousands of settings, no obvious way to test them all. And again at Morningside, when a stalled prototype turned into two days of learning Python and building the thing myself. Different fields, same move: narrow an enormous space of options down to the one that actually works, fast.</p>
+
+      <div class="timeline-cols">
+        <div>
+          <h3 class="tl-h3">Experience</h3>
+
+          <div class="tl-item">
+            <p class="tl-role">Engineering Intern, VulcanForms</p>
+            <p class="tl-meta">Devens, MA (June–August 2026)</p>
+          </div>
+
+          <div class="tl-item">
+            <p class="tl-role">Undergraduate Researcher, The Stout Lab</p>
+            <p class="tl-meta">Medford/Somerville, MA (January 2026–present)</p>
+          </div>
+
+          <div class="tl-item">
+            <p class="tl-role">Plastibot Project Lead, Tufts IDEA Lab</p>
+            <p class="tl-meta">Medford/Somerville, MA (September 2025–present)</p>
+          </div>
+
+          <div class="tl-item">
+            <p class="tl-role">Product &amp; GTM Team Member, Collage AI, Inc.</p>
+            <p class="tl-meta">Cambridge, MA / Remote (September 2025–present)</p>
+          </div>
+
+          <div class="tl-item">
+            <p class="tl-role">Analyst Intern, Morningside</p>
+            <p class="tl-meta">Cambridge, MA (June–August 2025)</p>
+          </div>
+
+          <div class="tl-item">
+            <p class="tl-role">Strategy Intern, Yardsy (formerly ArtGlo)</p>
+            <p class="tl-meta">Leominster, MA (June–August 2024)</p>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="tl-h3">Education</h3>
+
+          <div class="tl-item">
+            <p class="tl-role">Tufts University</p>
+            <p class="tl-meta">B.S., Electrical Engineering &amp; Biomedical Engineering (expected 2029)</p>
+            <p class="tl-desc">GPA 4.0</p>
+          </div>
+
+          <div class="tl-item">
+            <p class="tl-role">Weston High School</p>
+            <p class="tl-meta">Class of 2025</p>
+            <p class="tl-desc">GPA 3.97 (unweighted)</p>
+          </div>
+
+          <div class="tl-item">
+            <p class="tl-role">Harvard Summer &amp; Extension Schools</p>
+            <p class="tl-desc">Linear Algebra, Multivariable Calculus</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-signoff">
+        <img class="signoff-photo" src="william-photo.png" alt="Portrait of William Balz" width="96" height="96">
+        <div>
+          <p class="signoff-name">William Balz</p>
+          <p class="signoff-loc">Boston, MA</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="contact" class="section plain-dark on-dark contact-section">
+    <div class="wrap">
+      <p class="kicker" style="justify-content:center;">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="0" x2="8" y2="3" stroke="currentColor" stroke-width="1.2"/><line x1="8" y1="13" x2="8" y2="16" stroke="currentColor" stroke-width="1.2"/><line x1="0" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.2"/><line x1="13" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="1.2"/></svg>
+        Get in touch
+      </p>
+      <h2 class="section-h2" style="margin:0 auto 20px; max-width:none;">Say hello</h2>
+      <p class="prose" style="margin:0 auto; color:var(--paper-dim);">Happy to talk about math, projects, or anything adjacent to search, optimization, or making things work under a deadline.</p>
+
+      <div class="contact-links">
+        <a href="mailto:WilliamBalzF@gmail.com">WilliamBalzF@gmail.com</a>
+        <a href="https://www.linkedin.com/in/william-balz-496b08370" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/WillBalz" target="_blank" rel="noopener">GitHub</a>
+        <a href="William Balz Resume_q.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
+      </div>
+
+      <p class="closing-quote">
+        “The core lesson wasn't about running tests — it was learning to prune a tree with thousands of possibilities when you need to find a single leaf, fast.”
+        <cite>William Balz</cite>
+      </p>
+
+      <p class="foot-copy">© 2026 William Balz</p>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>
