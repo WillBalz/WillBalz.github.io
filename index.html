@@ -675,6 +675,35 @@ button svg,a svg {
 .project-card:hover .project-art {
   box-shadow:0 15px 30px #24251f17
 }
+.heist-project {
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(25px,4vw,60px);
+  align-items:center;
+  padding-bottom:30px;
+  margin-bottom:5px;
+  border-bottom:1px solid var(--line)
+}
+.heist-project .project-art {
+  display:block;
+  height:auto;
+  aspect-ratio:3/2;
+  background:#0c1c17
+}
+.heist-project img {
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover
+}
+.project-actions {
+  display:flex;
+  gap:22px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-top:24px
+}
 .art-label {
   position:absolute;
   top:21px;
@@ -1558,6 +1587,11 @@ html.motion-paused *,html.motion-paused *:before,html.motion-paused *:after {
     grid-template-columns:1fr;
     gap:25px
   }
+  .heist-project {
+    grid-template-columns:1fr;
+    gap:0;
+    padding-bottom:12px
+  }
   .project-art {
     height:300px
   }
@@ -1969,9 +2003,36 @@ html.motion-paused *,html.motion-paused *:before,html.motion-paused *:after {
 <h2 id="projects-title">Less theory.<br>
 <em>More making things.</em>
 </h2>
-<p class="mono">A couple of things<br>I’ve built.</p>
+<p class="mono">A few things<br>I’ve built.</p>
 </div>
 <div class="project-grid">
+<article class="project-card heist-project reveal" id="after-hours">
+<a class="project-art" href="https://after-hours-natural-history-heist.willbalz.chatgpt.site" target="_blank" rel="noopener" aria-label="Play After Hours, a multiplayer museum heist">
+<img src="assets/after-hours.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="After Hours: an illustrated museum at night, with specimen galleries, security beams, and a locked Darwin vault.">
+</a>
+<div class="project-info">
+<div class="project-meta">
+<span>HANDSHAKE GAME CHALLENGE</span>
+<span>01 / MULTIPLAYER</span>
+</div>
+<h3>
+<a href="https://after-hours-natural-history-heist.willbalz.chatgpt.site" target="_blank" rel="noopener">After Hours <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true">
+<path d="M5 19 19 5M5 5h14v14"/>
+</svg>
+</a>
+</h3>
+<p>A four-player museum heist where knowing a little science can get you a long way. Race through three museums, experiment with stolen specimens, and figure out what belongs together before someone opens the vault. I built it with ChatGPT for Handshake’s game challenge, exploring how quick movement and careful deduction could share the same game.</p>
+<div class="project-tags">
+<span>React / Canvas</span>
+<span>Realtime multiplayer</span>
+<span>Desktop + mobile</span>
+</div>
+<div class="project-actions">
+<a class="button" href="https://after-hours-natural-history-heist.willbalz.chatgpt.site" target="_blank" rel="noopener">Play the game <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a>
+<a class="text-link" href="https://github.com/WillBalz/after-hours" target="_blank" rel="noopener">View source <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a>
+</div>
+</div>
+</article>
 <article class="project-card reveal">
 <div class="project-art spectral-art" aria-label="Animated illustration of a hyperspectral imaging scan">
 <span class="art-label">PLASTIBOT / SPECTRAL SIGNATURE</span>
@@ -1988,7 +2049,7 @@ html.motion-paused *,html.motion-paused *:before,html.motion-paused *:after {
 <div class="project-info">
 <div class="project-meta">
 <span>TUFTS IDEA LAB</span>
-<span>01 / MACHINE LEARNING</span>
+<span>02 / MACHINE LEARNING</span>
 </div>
 <h3>
 <a href="https://github.com/WillBalz/Plastibot" target="_blank" rel="noopener">Plastibot <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true">
@@ -2043,7 +2104,7 @@ html.motion-paused *,html.motion-paused *:before,html.motion-paused *:after {
 <div class="project-info">
 <div class="project-meta">
 <span>SIDE PROJECT</span>
-<span>02 / GAME AI</span>
+<span>03 / GAME AI</span>
 </div>
 <h3>
 <a href="https://github.com/WillBalz/SushiGo" target="_blank" rel="noopener">Sushi Go bot <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true">
